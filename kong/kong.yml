@@ -1,0 +1,29 @@
+_format_version: "3.0"
+_transform: true
+
+services:
+  - name: login-service
+    host: login-service
+    port: 3000
+    protocol: http
+    routes:
+      - name: login-route
+        paths:
+          - /login
+        strip_path: true
+        methods:
+          - GET
+          - POST
+
+  - name: student-service
+    host: student-service
+    port: 3000
+    protocol: http
+    routes:
+      - name: student-route
+        paths:
+          - /student
+        strip_path: true
+        methods:
+          - GET
+          - POST

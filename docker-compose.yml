@@ -46,6 +46,24 @@ services:
     networks:
       - kong-net-2
 
+  postgres:
+    image: postgres:13
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypass
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - kong-net-2
+
+volumes:
+  postgres_data:
+
 networks:
   kong-net-2:
     driver: bridge

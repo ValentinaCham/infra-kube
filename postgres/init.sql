@@ -14,7 +14,6 @@ CREATE TABLE users (
   name VARCHAR(100),
   email VARCHAR(100) UNIQUE NOT NULL,
   password VARCHAR(255) NOT NULL,
-  photo VARCHAR(255),
   role_id INT,
   mfa_enabled BOOLEAN DEFAULT FALSE,
   FOREIGN KEY (role_id) REFERENCES roles(id)
@@ -125,3 +124,17 @@ CREATE TABLE files (
 );
 
 CREATE INDEX idx_fileable ON files (fileable_id, fileable_type);
+
+INSERT INTO roles (name) VALUES
+('Admin'),
+('Teacher'),
+('Student');
+
+INSERT INTO users (name, email, password, photo, role_id, mfa_enabled) VALUES
+('Admin User', 'admin@example.com', 'hashed_password_admin', 1, FALSE);  
+
+INSERT INTO users (name, email, password, photo, role_id, mfa_enabled) VALUES
+('Teacher User', 'teacher@example.com', 'hashed_password_teacher', 2, FALSE);  
+
+INSERT INTO users (name, email, password, photo, role_id, mfa_enabled) VALUES
+('Student User', 'student@example.com', 'hashed_password_student', 3, FALSE);  

@@ -1,7 +1,7 @@
--- Crear la base de datos 'project'
-CREATE DATABASE project;
+-- Crear la base de datos 'mydb'
+CREATE DATABASE mydb;
 
-\connect project;
+\connect mydb;
 
 -- ROLES AND USERS
 CREATE TABLE roles (
@@ -121,6 +121,41 @@ CREATE TABLE files (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   fileable_id INT NOT NULL,
   fileable_type VARCHAR(100) NOT NULL
+);
+
+-- CONTENTS
+CREATE TYPE post_status AS ENUM (
+    'draft', 
+    'scheduled', 
+    'published', 
+    'archived', 
+    'deleted'
+);
+
+CREATE TYPE post_visibility AS ENUM (
+    'public', 
+    'private'
+);
+
+CREATE TABLE posts (
+    post_id SERIAL PRIMARY KEY,
+    module_id INT NOT NULL,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    images_path TEXT[],
+    status post_status NOT NULL DEFAULT 'draft',
+    visibility post_visibility NOT NULL DEFAULT 'public',
+    user_creator_id INT NOT NULL,
+    user_modifier_id INT,
+    draft_create_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    draft_modify_datetime TIMESTAMP,
+    schedule_datetime TIMESTAMP,
+    publish_datetime TIMESTAMP,
+    archive_datetime TIMESTAMP,
+    delete_datetime TIMESTAMP,
+    CONSTRAINT fk_module FOREIGN KEY (module_id) REFERENCES modules(module_id),
+    CONSTRAINT fk_creator FOREIGN KEY (user_creator_id) REFERENCES users(user_id),
+    CONSTRAINT fk_modifier FOREIGN KEY (user_modifier_id) REFERENCES users(user_id)
 );
 
 CREATE INDEX idx_fileable ON files (fileable_id, fileable_type);

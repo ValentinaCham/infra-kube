@@ -1,7 +1,9 @@
--- Crear la base de datos 'mydb'
-CREATE DATABASE mydb;
+-- Crear la base de datos 'project'
+\c postgres
+DROP DATABASE IF EXISTS project;
+CREATE DATABASE project;
 
-\connect mydb;
+\connect project;
 
 -- ROLES AND USERS
 CREATE TABLE roles (
@@ -138,7 +140,7 @@ CREATE TYPE post_visibility AS ENUM (
 );
 
 CREATE TABLE posts (
-    post_id SERIAL PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     module_id INT NOT NULL,
     title TEXT NOT NULL,
     content TEXT NOT NULL,
@@ -153,9 +155,9 @@ CREATE TABLE posts (
     publish_datetime TIMESTAMP,
     archive_datetime TIMESTAMP,
     delete_datetime TIMESTAMP,
-    CONSTRAINT fk_module FOREIGN KEY (module_id) REFERENCES modules(module_id),
-    CONSTRAINT fk_creator FOREIGN KEY (user_creator_id) REFERENCES users(user_id),
-    CONSTRAINT fk_modifier FOREIGN KEY (user_modifier_id) REFERENCES users(user_id)
+    CONSTRAINT fk_module FOREIGN KEY (module_id) REFERENCES modules(id),
+    CONSTRAINT fk_creator FOREIGN KEY (user_creator_id) REFERENCES users(id),
+    CONSTRAINT fk_modifier FOREIGN KEY (user_modifier_id) REFERENCES users(id)
 );
 
 CREATE INDEX idx_fileable ON files (fileable_id, fileable_type);
@@ -165,11 +167,11 @@ INSERT INTO roles (name) VALUES
 ('Teacher'),
 ('Student');
 
-INSERT INTO users (name, email, password, photo, role_id, mfa_enabled) VALUES
+INSERT INTO users (name, email, password, role_id, mfa_enabled) VALUES
 ('Admin User', 'admin@example.com', 'hashed_password_admin', 1, FALSE);  
 
-INSERT INTO users (name, email, password, photo, role_id, mfa_enabled) VALUES
+INSERT INTO users (name, email, password, role_id, mfa_enabled) VALUES
 ('Teacher User', 'teacher@example.com', 'hashed_password_teacher', 2, FALSE);  
 
-INSERT INTO users (name, email, password, photo, role_id, mfa_enabled) VALUES
+INSERT INTO users (name, email, password, role_id, mfa_enabled) VALUES
 ('Student User', 'student@example.com', 'hashed_password_student', 3, FALSE);  

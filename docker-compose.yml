@@ -52,7 +52,7 @@ services:
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypass
-      POSTGRES_DB: mydb
+      POSTGRES_DB: project
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
